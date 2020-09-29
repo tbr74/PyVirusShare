@@ -1,8 +1,8 @@
 import requests
 from pathlib import Path
+import time
 
 _API_ENDPOINT = 'https://virusshare.com/apiv2'
-# _RATE_LIMIT = 4
 
 class APIError(Exception):
     """Raised when there is any error from the API."""
@@ -47,10 +47,13 @@ class VirusShare:
             raise SystemExit(e)
 
     def info(self, hash_str: str) -> dict:
-        result = self._request('/file', hash_str)
-        return {'data': result.json()}
+        time.sleep(15)
+        print("Sleep before calling /file %s request" % hash_str)
+        return self._request('/file', hash_str).json()
 
-    def download(self, hash_str: str, dest: str):
+    def download(self, hash_str: str, dest: str) -> dict:
+        time.sleep(15)
+        print("Sleep before calling /download %s request" % hash_str)
         result = self._request('/download', hash_str)
         
         dest_folder = Path(dest)
@@ -58,10 +61,11 @@ class VirusShare:
             f.write(result.content)
 
     def quick(self, hash_str: str) -> dict:
-        result = self._request('/quick', hash_str)
-        return {'data': result.json()}
+        time.sleep(15)
+        print("Sleep before calling /quick %s request" % hash_str)
+        return self._request('/quick', hash_str).json()
 
     def source(self, hash_str: str) -> dict:
-        result = self._request('/source', hash_str)
-        return {'data': result.json()}
-
+        time.sleep(15)
+        print("Sleep before calling /source %s request" % hash_str)
+        return self._request('/source', hash_str).json()
